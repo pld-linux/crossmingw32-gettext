@@ -22,6 +22,7 @@ BuildRequires:	crossmingw32-gcc
 %{?with_asprintf:BuildRequires:	crossmingw32-gcc-c++}
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool
+BuildRequires:	texinfo
 Requires:	crossmingw32-libiconv
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
