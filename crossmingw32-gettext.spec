@@ -8,13 +8,14 @@ Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/mingw/%{realname}-%{version}-%{snapshot}-src.tar.bz2
+Patch0:		crossmingw32-gettext.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gtk-doc >= 0.9-4
 BuildRequires:	libtool
 BuildRequires:	rpm-build >= 4.1-8.2
-BuildRequires:	crossmingw32-iconv
+BuildRequires:	crossmingw32-libiconv
 BuildRoot:	%{tmpdir}/%{realname}-%{version}-root-%(id -u -n)
 
 %define		no_install_post_strip	1
@@ -33,6 +34,7 @@ gettext
 
 %prep
 %setup -q -n %{realname}-%{version}
+%patch0 -p1
 
 %build
 CC=%{target}-gcc ; export CC
