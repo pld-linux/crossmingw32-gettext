@@ -1,0 +1,33 @@
+diff -uNr gettext-0.11.5/lib/Makefile.am gettext-0.11.5.2/lib/Makefile.am
+--- gettext-0.11.5/lib/Makefile.am	2003-02-01 19:13:17.000000000 +0100
++++ gettext-0.11.5.2/lib/Makefile.am	2003-08-25 18:02:56.000000000 +0200
+@@ -39,7 +39,6 @@
+   fstrcmp.h fstrcmp.c \
+   full-write.h full-write.c \
+   gcd.h gcd.c \
+-  getopt.h getopt.c getopt1.c \
+   hash.h hash.c \
+   javacomp.h javacomp.c \
+   javaexec.h javaexec.c \
+diff -uNr gettext-0.11.5/lib/Makefile.in gettext-0.11.5.2/lib/Makefile.in
+--- gettext-0.11.5/lib/Makefile.in	2003-02-01 19:23:37.000000000 +0100
++++ gettext-0.11.5.2/lib/Makefile.in	2003-08-25 18:03:09.000000000 +0200
+@@ -228,7 +228,6 @@
+   fstrcmp.h fstrcmp.c \
+   full-write.h full-write.c \
+   gcd.h gcd.c \
+-  getopt.h getopt.c getopt1.c \
+   hash.h hash.c \
+   javacomp.h javacomp.c \
+   javaexec.h javaexec.c \
+@@ -324,8 +323,8 @@
+ libgettextlib_la_DEPENDENCIES = @LTALLOCA@ @LTLIBOBJS@
+ am_libgettextlib_la_OBJECTS = argmatch.lo backupfile.lo addext.lo \
+ 	basename.lo c-ctype.lo copy-file.lo error.lo execute.lo \
+-	findprog.lo fstrcmp.lo full-write.lo gcd.lo getopt.lo \
+-	getopt1.lo hash.lo javacomp.lo javaexec.lo linebreak.lo \
++	findprog.lo fstrcmp.lo full-write.lo gcd.lo \
++	hash.lo javacomp.lo javaexec.lo linebreak.lo \
+ 	localcharset.lo mbswidth.lo obstack.lo concatpath.lo \
+ 	pipe-bidi.lo pipe-in.lo pipe-out.lo progname.lo safe-read.lo \
+ 	sh-quote.lo stpncpy.lo strtoul.lo tmpdir.lo wait-process.lo \
