@@ -2,16 +2,17 @@
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
 Name:		crossmingw32-%{realname}
-Version:	0.13
+Version:	0.13.1
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	ftp://ftp.gnu.org/pub/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	318e266ca3a5d26946ce3684db5bf2cf
+# Source0-md5:	b3477289185e7781527345c14a4565de
 Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-killkillkill.patch
 Patch2:		%{realname}-pl.po-update.patch
-Patch3:		%{name}.patch
+Patch3:		%{realname}-am18.patch
+Patch4:		%{name}.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake >= 1.7.5
@@ -43,6 +44,7 @@ Biblioteki gettext - wersja skro¶na dla mingw32.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__libtoolize}
