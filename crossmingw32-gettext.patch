@@ -22,17 +22,6 @@ diff -uNr gettext-0.12.1/gettext-tools/lib/canonicalize.c gettext-0.12.1.good/ge
  
  #include <errno.h>
  #ifndef _LIBC
-diff -uNr gettext-0.12.1/gettext-tools/lib/Makefile.am gettext-0.12.1.good/gettext-tools/lib/Makefile.am
---- gettext-0.12.1/gettext-tools/lib/Makefile.am	2003-05-12 21:17:23.000000000 +0200
-+++ gettext-0.12.1.good/gettext-tools/lib/Makefile.am	2003-08-26 15:28:48.000000000 +0200
-@@ -45,7 +45,6 @@
-   fstrcmp.h fstrcmp.c \
-   full-write.h full-write.c \
-   gcd.h gcd.c \
--  getopt.h getopt.c getopt1.c \
-   hash.h hash.c \
-   javacomp.h javacomp.c \
-   javaexec.h javaexec.c \
 diff -uNr gettext-0.12.1/gettext-tools/lib/mkdtemp.c gettext-0.12.1.good/gettext-tools/lib/mkdtemp.c
 --- gettext-0.12.1/gettext-tools/lib/mkdtemp.c	2003-01-14 14:36:07.000000000 +0100
 +++ gettext-0.12.1.good/gettext-tools/lib/mkdtemp.c	2003-08-26 15:08:12.000000000 +0200
