@@ -1,7 +1,7 @@
-
 %define		realname		gettext
 %define		snapshot		2003.02.01-1
-Summary:	iconv
+Summary:	gettext libraries - cross mingw32 version
+Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
 Name:		crossmingw32-%{realname}
 Version:	0.12.1
 Release:	1
@@ -19,10 +19,11 @@ Patch5:		crossmingw32-gettext.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	crossmingw32-gcc
+BuildRequires:	crossmingw32-libiconv
 BuildRequires:	gtk-doc >= 0.9-4
 BuildRequires:	libtool
 BuildRequires:	rpm-build >= 4.1-8.2
-BuildRequires:	crossmingw32-libiconv
 BuildRoot:	%{tmpdir}/%{realname}-%{version}-root-%(id -u -n)
 
 %define		no_install_post_strip	1
@@ -37,7 +38,10 @@ BuildRoot:	%{tmpdir}/%{realname}-%{version}-root-%(id -u -n)
 %define		__cxx			%{target}-g++
 
 %description
-gettext
+gettext libraries - cross mingw32 version.
+
+%description -l pl
+Biblioteki gettext - wersja skro¶na dla mingw32.
 
 %prep
 %setup -q -n %{realname}-%{version}
@@ -91,4 +95,5 @@ install -d $RPM_BUILD_ROOT%{_mandir}
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(644,root,root,755)
 %{arch}
