@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	asprintf	# without libasprintf (in C++)
+#
 %define		realname		gettext
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
@@ -17,6 +21,7 @@ URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake >= 1.7.5
 BuildRequires:	crossmingw32-gcc
+%{?with_asprintf:BuildRequires:	crossmingw32-gcc-c++}
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool
 Requires:	crossmingw32-libiconv
@@ -83,8 +88,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %{_bindir}/libintl-2.dll
-#%{_libdir}/libasprintf.a
-#%{_libdir}/libasprintf.la
+%if %{with asprintf}
+%{_libdir}/libasprintf.a
+%{_libdir}/libasprintf.la
+%endif
 %{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
 %{_includedir}/*.h
