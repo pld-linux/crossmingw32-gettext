@@ -10,12 +10,12 @@ Group:		Libraries
 #Source0:	http://dl.sourceforge.net/mingw/%{realname}-%{version}-%{snapshot}-src.tar.bz2
 # Source0-md5:	5d4bddd300072315e668247e5b7d5bdb
 Source0:	ftp://ftp.gnu.org/pub/gnu/gettext/%{realname}-%{version}.tar.gz
-#Patch0:		crossmingw32-gettext.patch
 Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-aclocal.patch
 Patch2:		%{realname}-killkillkill.patch
 Patch3:		%{realname}-pl.po-update.patch
 Patch4:		%{realname}-no_docs.patch
+Patch5:		crossmingw32-gettext.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -46,6 +46,7 @@ gettext
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 CC=%{target}-gcc ; export CC
