@@ -83,8 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %{_bindir}/libintl-2.dll
-%{_libdir}/libasprintf.a
-%{_libdir}/libasprintf.la
+#%{_libdir}/libasprintf.a
+#%{_libdir}/libasprintf.la
 %{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
 %{_includedir}/*.h
