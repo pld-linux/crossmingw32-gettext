@@ -1,38 +1,32 @@
 %define		realname		gettext
-%define		snapshot		2003.02.01-1
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
 Name:		crossmingw32-%{realname}
-Version:	0.12.1
+Version:	0.13
 Release:	1
 License:	LGPL
 Group:		Libraries
-#Source0:	http://dl.sourceforge.net/mingw/%{realname}-%{version}-%{snapshot}-src.tar.bz2
-# Source0-md5:	5d4bddd300072315e668247e5b7d5bdb
 Source0:	ftp://ftp.gnu.org/pub/gnu/gettext/%{realname}-%{version}.tar.gz
+# Source0-md5:	318e266ca3a5d26946ce3684db5bf2cf
 Patch0:		%{realname}-info.patch
-Patch1:		%{realname}-aclocal.patch
-Patch2:		%{realname}-killkillkill.patch
-Patch3:		%{realname}-pl.po-update.patch
-Patch4:		%{realname}-no_docs.patch
-Patch5:		crossmingw32-gettext.patch
+Patch1:		%{realname}-killkillkill.patch
+Patch2:		%{realname}-pl.po-update.patch
+Patch3:		%{name}.patch
 URL:		http://www.gnu.org/software/gettext/
-BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.57
+BuildRequires:	automake >= 1.7.5
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-libiconv
-BuildRequires:	gtk-doc >= 0.9-4
 BuildRequires:	libtool
-BuildRequires:	rpm-build >= 4.1-8.2
-BuildRoot:	%{tmpdir}/%{realname}-%{version}-root-%(id -u -n)
+Requires:	crossmingw32-libiconv
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		no_install_post_strip	1
 
 %define		target			i386-mingw32
 %define		target_platform 	i386-pc-mingw32
-%define		arch			%{_prefix}/%{target}
-%define		gccarch			%{_prefix}/lib/gcc-lib/%{target}
-%define		gcclib			%{_prefix}/lib/gcc-lib/%{target}/%{version}
+%define		_sysprefix		/usr
+%define		_prefix			%{_sysprefix}/%{target}
 
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
@@ -49,51 +43,46 @@ Biblioteki gettext - wersja skro¶na dla mingw32.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
-CC=%{target}-gcc ; export CC
-CXX=%{target}-g++ ; export CXX
-LD=%{target}-ld ; export LD
-AR=%{target}-ar ; export AR
-AS=%{target}-as ; export AS
-CROSS_COMPILE=1 ; export CROSS_COMPILE
-CPPFLAGS="-I%{arch}/include" ; export CPPFLAGS
-RANLIB=%{target}-ranlib ; export RANLIB
-
-rm -f aclocal.m4 missing
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__automake}
 cd gettext-runtime
-rm -f aclocal.m4 missing
 %{__libtoolize}
-%{__aclocal} -I m4 -I ../gettext-tools/m4 -I ../autoconf-lib-link/m4
+%{__aclocal} -I m4 -I ../autoconf-lib-link/m4 -I ../gettext-tools/m4 -I ../config/m4
 %{__autoconf}
 %{__automake}
+cd ..
 
 %configure \
+	AR="%{target}-ar" \
+	RANLIB="%{target}-ranlib" \
 	--target=%{target} \
 	--host=%{target_platform} \
-	--prefix=%{arch} \
-	--disable-static \
-	--bindir=%{arch}/bin \
-	--libdir=%{arch}/lib \
-	--includedir=%{arch}/include
+	--disable-static
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_mandir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%if 0%{!?debug:1}
+%{target}-strip --strip-unneeded -R.comment -R.note $RPM_BUILD_ROOT%{_bindir}/*.dll
+%{target}-strip -g -R.comment -R.note $RPM_BUILD_ROOT%{_libdir}/*.a
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%{arch}
+%{_bindir}/libintl-2.dll
+%{_libdir}/libasprintf.a
+%{_libdir}/libasprintf.la
+%{_libdir}/libintl.dll.a
+%{_libdir}/libintl.la
+%{_includedir}/*.h
