@@ -6,17 +6,15 @@
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
 Name:		crossmingw32-%{realname}
-Version:	0.13.1
+Version:	0.14
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	ftp://ftp.gnu.org/pub/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	b3477289185e7781527345c14a4565de
+# Source0-md5:	e715be150bbe32439ae68fab32df0299
 Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-killkillkill.patch
-Patch2:		%{realname}-pl.po-update.patch
-Patch3:		%{realname}-am18.patch
-Patch4:		%{name}.patch
+Patch2:		%{name}.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.57
 BuildRequires:	automake >= 1.7.5
@@ -48,16 +46,19 @@ Biblioteki gettext - wersja skro¶na dla mingw32.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
 
 %build
+# it's m4_included somewhere
+install %{_aclocaldir}/libtool.m4 config/m4/libtool.m4
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__automake}
-cd gettext-runtime
-%{__libtoolize}
+cd autoconf-lib-link
+%{__aclocal} -I m4 -I ../config/m4
+%{__autoconf}
+%{__automake}
+cd ../gettext-runtime
 %{__aclocal} -I m4 -I ../autoconf-lib-link/m4 -I ../gettext-tools/m4 -I ../config/m4
 %{__autoconf}
 %{__automake}
@@ -68,6 +69,7 @@ cd ..
 	RANLIB="%{target}-ranlib" \
 	--target=%{target} \
 	--host=%{target_platform} \
+	--disable-csharp \
 	--disable-static
 %{__make}
 
@@ -87,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%{_bindir}/libintl-2.dll
+%{_bindir}/libintl-3.dll
 %if %{with asprintf}
 %{_libdir}/libasprintf.a
 %{_libdir}/libasprintf.la
