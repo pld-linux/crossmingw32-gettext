@@ -1,7 +1,31 @@
-diff -uNr gettext-0.11.5/lib/Makefile.am gettext-0.11.5.2/lib/Makefile.am
---- gettext-0.11.5/lib/Makefile.am	2003-02-01 19:13:17.000000000 +0100
-+++ gettext-0.11.5.2/lib/Makefile.am	2003-08-25 18:02:56.000000000 +0200
-@@ -39,7 +39,6 @@
+diff -uNr gettext-0.12.1/gettext-runtime/intl/relocatable.c gettext-0.12.1.good/gettext-runtime/intl/relocatable.c
+--- gettext-0.12.1/gettext-runtime/intl/relocatable.c	2003-04-07 12:42:24.000000000 +0200
++++ gettext-0.12.1.good/gettext-runtime/intl/relocatable.c	2003-08-26 14:32:46.000000000 +0200
+@@ -38,6 +38,9 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <windef.h>
++#include <wtypes.h>
++#include <winbase.h>
+ 
+ #ifdef NO_XMALLOC
+ # define xmalloc malloc
+diff -uNr gettext-0.12.1/gettext-tools/lib/canonicalize.c gettext-0.12.1.good/gettext-tools/lib/canonicalize.c
+--- gettext-0.12.1/gettext-tools/lib/canonicalize.c	2003-05-09 12:12:06.000000000 +0200
++++ gettext-0.12.1.good/gettext-tools/lib/canonicalize.c	2003-08-26 15:22:31.000000000 +0200
+@@ -46,6 +46,7 @@
+ #endif
+ 
+ #include <sys/stat.h>
++#define lstat stat
+ 
+ #include <errno.h>
+ #ifndef _LIBC
+diff -uNr gettext-0.12.1/gettext-tools/lib/Makefile.am gettext-0.12.1.good/gettext-tools/lib/Makefile.am
+--- gettext-0.12.1/gettext-tools/lib/Makefile.am	2003-05-12 21:17:23.000000000 +0200
++++ gettext-0.12.1.good/gettext-tools/lib/Makefile.am	2003-08-26 15:28:48.000000000 +0200
+@@ -45,7 +45,6 @@
    fstrcmp.h fstrcmp.c \
    full-write.h full-write.c \
    gcd.h gcd.c \
@@ -9,25 +33,87 @@ diff -uNr gettext-0.11.5/lib/Makefile.am gettext-0.11.5.2/lib/Makefile.am
    hash.h hash.c \
    javacomp.h javacomp.c \
    javaexec.h javaexec.c \
-diff -uNr gettext-0.11.5/lib/Makefile.in gettext-0.11.5.2/lib/Makefile.in
---- gettext-0.11.5/lib/Makefile.in	2003-02-01 19:23:37.000000000 +0100
-+++ gettext-0.11.5.2/lib/Makefile.in	2003-08-25 18:03:09.000000000 +0200
-@@ -228,7 +228,6 @@
-   fstrcmp.h fstrcmp.c \
-   full-write.h full-write.c \
-   gcd.h gcd.c \
--  getopt.h getopt.c getopt1.c \
-   hash.h hash.c \
-   javacomp.h javacomp.c \
-   javaexec.h javaexec.c \
-@@ -324,8 +323,8 @@
- libgettextlib_la_DEPENDENCIES = @LTALLOCA@ @LTLIBOBJS@
- am_libgettextlib_la_OBJECTS = argmatch.lo backupfile.lo addext.lo \
- 	basename.lo c-ctype.lo copy-file.lo error.lo execute.lo \
--	findprog.lo fstrcmp.lo full-write.lo gcd.lo getopt.lo \
--	getopt1.lo hash.lo javacomp.lo javaexec.lo linebreak.lo \
-+	findprog.lo fstrcmp.lo full-write.lo gcd.lo \
-+	hash.lo javacomp.lo javaexec.lo linebreak.lo \
- 	localcharset.lo mbswidth.lo obstack.lo concatpath.lo \
- 	pipe-bidi.lo pipe-in.lo pipe-out.lo progname.lo safe-read.lo \
- 	sh-quote.lo stpncpy.lo strtoul.lo tmpdir.lo wait-process.lo \
+diff -uNr gettext-0.12.1/gettext-tools/lib/mkdtemp.c gettext-0.12.1.good/gettext-tools/lib/mkdtemp.c
+--- gettext-0.12.1/gettext-tools/lib/mkdtemp.c	2003-01-14 14:36:07.000000000 +0100
++++ gettext-0.12.1.good/gettext-tools/lib/mkdtemp.c	2003-08-26 15:08:12.000000000 +0200
+@@ -167,7 +167,7 @@
+       v /= 62;
+       XXXXXX[5] = letters[v % 62];
+ 
+-      fd = __mkdir (tmpl, S_IRUSR | S_IWUSR | S_IXUSR);
++      fd = __mkdir (tmpl);
+ 
+       if (fd >= 0)
+ 	{
+diff -uNr gettext-0.12.1/gettext-tools/lib/relocatable.c gettext-0.12.1.good/gettext-tools/lib/relocatable.c
+--- gettext-0.12.1/gettext-tools/lib/relocatable.c	2003-04-07 12:42:24.000000000 +0200
++++ gettext-0.12.1.good/gettext-tools/lib/relocatable.c	2003-08-26 14:08:11.000000000 +0200
+@@ -38,6 +38,8 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <windef.h>
++#include <winbase.h>
+ 
+ #ifdef NO_XMALLOC
+ # define xmalloc malloc
+diff -uNr gettext-0.12.1/gettext-tools/lib/xreadlink.c gettext-0.12.1.good/gettext-tools/lib/xreadlink.c
+--- gettext-0.12.1/gettext-tools/lib/xreadlink.c	2003-02-28 13:19:46.000000000 +0100
++++ gettext-0.12.1.good/gettext-tools/lib/xreadlink.c	2003-08-26 15:14:40.000000000 +0200
+@@ -34,6 +34,8 @@
+ extern int errno;
+ #endif
+ 
++typedef int ssize_t;
++
+ #if HAVE_LIMITS_H
+ # include <limits.h>
+ #endif
+@@ -66,6 +68,11 @@
+    If realloc fails, or if the link value is longer than SIZE_MAX :-),
+    give a diagnostic and exit.  */
+ 
++int readlink(const char *path, char *buf, size_t bufsiz)
++{
++    return -1;
++}
++
+ char *
+ xreadlink (char const *filename)
+ {
+diff -uNr gettext-0.12.1/gettext-tools/src/Makefile.am gettext-0.12.1.good/gettext-tools/src/Makefile.am
+--- gettext-0.12.1/gettext-tools/src/Makefile.am	2003-04-29 12:05:37.000000000 +0200
++++ gettext-0.12.1.good/gettext-tools/src/Makefile.am	2003-08-26 20:52:28.000000000 +0200
+@@ -25,7 +25,7 @@
+ RM = rm -f
+ 
+ bin_PROGRAMS = \
+-msgcmp msgfmt msgmerge msgunfmt xgettext \
++msgcmp msgmerge msgunfmt xgettext \
+ msgattrib msgcat msgcomm msgconv msgen msgexec msgfilter msggrep msginit msguniq
+ 
+ noinst_PROGRAMS = hostname urlget
+diff -uNr gettext-0.12.1/gettext-tools/src/write-java.c gettext-0.12.1.good/gettext-tools/src/write-java.c
+--- gettext-0.12.1/gettext-tools/src/write-java.c	2003-04-29 12:04:04.000000000 +0200
++++ gettext-0.12.1.good/gettext-tools/src/write-java.c	2003-08-26 15:43:07.000000000 +0200
+@@ -1130,7 +1130,7 @@
+     for (i = 0; i < ndots; i++)
+       {
+ 	cleanup_list.subdir_count = i + 1;
+-	if (mkdir (subdirs[i], S_IRUSR | S_IWUSR | S_IXUSR) < 0)
++	if (mkdir (subdirs[i]) < 0)
+ 	  {
+ 	    error (0, errno, _("failed to create \"%s\""), subdirs[i]);
+ 	    while (i-- > 0)
+diff -uNr gettext-0.12.1/Makefile.am gettext-0.12.1.good/Makefile.am
+--- gettext-0.12.1/Makefile.am	2003-04-01 12:17:29.000000000 +0200
++++ gettext-0.12.1.good/Makefile.am	2003-08-26 20:52:48.000000000 +0200
+@@ -19,7 +19,7 @@
+ 
+ AUTOMAKE_OPTIONS = 1.5 gnu no-dependencies
+ 
+-SUBDIRS = autoconf-lib-link gettext-runtime gettext-tools
++SUBDIRS = autoconf-lib-link gettext-runtime
+ 
+ EXTRA_DIST = \
+   version.sh PACKAGING README.gemtext ChangeLog.0 \

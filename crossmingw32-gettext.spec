@@ -3,12 +3,19 @@
 %define		snapshot		2003.02.01-1
 Summary:	iconv
 Name:		crossmingw32-%{realname}
-Version:	0.11.5
+Version:	0.12.1
 Release:	1
 License:	LGPL
 Group:		Libraries
-Source0:	http://dl.sourceforge.net/mingw/%{realname}-%{version}-%{snapshot}-src.tar.bz2
-Patch0:		crossmingw32-gettext.patch
+#Source0:	http://dl.sourceforge.net/mingw/%{realname}-%{version}-%{snapshot}-src.tar.bz2
+# Source0-md5:	5d4bddd300072315e668247e5b7d5bdb
+Source0:	ftp://ftp.gnu.org/pub/gnu/gettext/%{realname}-%{version}.tar.gz
+#Patch0:		crossmingw32-gettext.patch
+Patch0:		%{realname}-info.patch
+Patch1:		%{realname}-aclocal.patch
+Patch2:		%{realname}-killkillkill.patch
+Patch3:		%{realname}-pl.po-update.patch
+Patch4:		%{realname}-no_docs.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -35,6 +42,10 @@ gettext
 %prep
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 CC=%{target}-gcc ; export CC
@@ -46,10 +57,17 @@ CROSS_COMPILE=1 ; export CROSS_COMPILE
 CPPFLAGS="-I%{arch}/include" ; export CPPFLAGS
 RANLIB=%{target}-ranlib ; export RANLIB
 
-#rm -f missing
+rm -f aclocal.m4 missing
 %{__libtoolize}
-%{__aclocal} -I m4
+%{__aclocal}
 %{__autoconf}
+%{__automake}
+cd gettext-runtime
+rm -f aclocal.m4 missing
+%{__libtoolize}
+%{__aclocal} -I m4 -I ../gettext-tools/m4 -I ../autoconf-lib-link/m4
+%{__autoconf}
+%{__automake}
 
 %configure \
 	--target=%{target} \
