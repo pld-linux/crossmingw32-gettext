@@ -6,12 +6,12 @@
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
 Name:		crossmingw32-%{realname}
-Version:	0.14.3
+Version:	0.14.4
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	ftp://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	14c2644c2f3b0eb67d5db7ee389547de
+# Source0-md5:	7580b2d77ef26cafa248f525dcb960c3
 Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-killkillkill.patch
 Patch2:		%{name}.patch
@@ -50,17 +50,17 @@ Biblioteki gettext - wersja skro¶na dla mingw32.
 
 %build
 # it's m4_included somewhere
-install %{_aclocaldir}/libtool.m4 config/m4/libtool.m4
+install %{_aclocaldir}/libtool.m4 m4/libtool.m4
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__automake}
 cd autoconf-lib-link
-%{__aclocal} -I m4 -I ../config/m4
+%{__aclocal} -I m4 -I ../m4
 %{__autoconf}
 %{__automake}
 cd ../gettext-runtime
-%{__aclocal} -I m4 -I ../autoconf-lib-link/m4 -I ../gettext-tools/m4 -I ../config/m4
+%{__aclocal} -I m4 -I ../autoconf-lib-link/m4 -I ../gettext-tools/m4 -I ../m4
 %{__autoconf}
 %{__automake}
 cd ..
