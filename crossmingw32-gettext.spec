@@ -6,12 +6,12 @@
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl):	Biblioteki gettext - wersja skro¶na dla mingw32
 Name:		crossmingw32-%{realname}
-Version:	0.14.6
+Version:	0.15
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	ftp://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	c26fc7f0a493c5c7c39bbc4e7ed42790
+# Source0-md5:	16bc6e4d37ac3d07495f737a2349a22b
 Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-killkillkill.patch
 Patch2:		%{name}.patch
@@ -90,11 +90,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%{_bindir}/libintl-3.dll
-%if %{with asprintf}
-%{_libdir}/libasprintf.a
-%{_libdir}/libasprintf.la
-%endif
+%{_bindir}/libintl-8.dll
 %{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
+%if %{with asprintf}
+%{_bindir}/libasprintf-0.dll
+%{_libdir}/libasprintf.dll.a
+%{_libdir}/libasprintf.la
+%endif
 %{_includedir}/*.h
