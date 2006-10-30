@@ -16,8 +16,8 @@ Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-killkillkill.patch
 Patch2:		%{name}.patch
 URL:		http://www.gnu.org/software/gettext/
-BuildRequires:	autoconf >= 2.57
-BuildRequires:	automake >= 1:1.7.5
+BuildRequires:	autoconf >= 2.60
+BuildRequires:	automake >= 1:1.10
 BuildRequires:	crossmingw32-gcc
 %{?with_asprintf:BuildRequires:	crossmingw32-gcc-c++}
 BuildRequires:	crossmingw32-libiconv
