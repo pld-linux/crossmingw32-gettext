@@ -4,7 +4,7 @@
 #
 %define		realname		gettext
 Summary:	gettext libraries - cross mingw32 version
-Summary(pl):	Biblioteki gettext - wersja skro∂na dla mingw32
+Summary(pl.UTF-8):   Biblioteki gettext - wersja skro≈õna dla mingw32
 Name:		crossmingw32-%{realname}
 Version:	0.16.1
 Release:	1
@@ -39,8 +39,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 gettext libraries - cross mingw32 version.
 
-%description -l pl
-Biblioteki gettext - wersja skro∂na dla mingw32.
+%description -l pl.UTF-8
+Biblioteki gettext - wersja skro≈õna dla mingw32.
 
 %prep
 %setup -q -n %{realname}-%{version}
