@@ -4,7 +4,7 @@
 #
 %define		realname		gettext
 Summary:	gettext libraries - cross mingw32 version
-Summary(pl.UTF-8):   Biblioteki gettext - wersja skrośna dla mingw32
+Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla mingw32
 Name:		crossmingw32-%{realname}
 Version:	0.16.1
 Release:	1
