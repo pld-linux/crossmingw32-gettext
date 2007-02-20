@@ -1,25 +1,22 @@
 #
-# Conditional build:
-%bcond_without	asprintf	# without libasprintf (in C++)
-#
-%define		realname		gettext
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla mingw32
-Name:		crossmingw32-%{realname}
+%define		_realname		gettext
+Name:		crossmingw32-%{_realname}
 Version:	0.16.1
 Release:	1
 License:	LGPL
 Group:		Libraries
-Source0:	ftp://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
+Source0:	ftp://ftp.gnu.org/gnu/gettext/%{_realname}-%{version}.tar.gz
 # Source0-md5:	3d9ad24301c6d6b17ec30704a13fe127
-Patch0:		%{realname}-info.patch
-Patch1:		%{realname}-killkillkill.patch
+Patch0:		%{_realname}-info.patch
+Patch1:		%{_realname}-killkillkill.patch
 Patch2:		%{name}.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	crossmingw32-gcc
-%{?with_asprintf:BuildRequires:	crossmingw32-gcc-c++}
+BuildRequires:	crossmingw32-gcc-c++
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool
 BuildRequires:	texinfo
@@ -30,9 +27,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		target			i386-mingw32
 %define		target_platform 	i386-pc-mingw32
+%define		arch			%{_prefix}/%{target}
+%define		gccarch			%{_prefix}/lib/gcc-lib/%{target}
+%define		gcclib			%{_prefix}/lib/gcc-lib/%{target}/%{version}
+
 %define		_sysprefix		/usr
 %define		_prefix			%{_sysprefix}/%{target}
-
+%define		_pkgconfigdir		%{_prefix}/lib/pkgconfig
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
 
@@ -43,12 +44,15 @@ gettext libraries - cross mingw32 version.
 Biblioteki gettext - wersja skrośna dla mingw32.
 
 %prep
-%setup -q -n %{realname}-%{version}
+%setup -q -n %{_realname}-%{version}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
 %build
+export PKG_CONFIG_PATH=%{_prefix}/lib/pkgconfig
+export AR="%{target}-ar"
+export RANLIB="%{target}-ranlib"
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -64,8 +68,6 @@ cd ../gettext-runtime
 cd ..
 
 %configure \
-	AR="%{target}-ar" \
-	RANLIB="%{target}-ranlib" \
 	--target=%{target} \
 	--host=%{target_platform} \
 	--disable-csharp \
@@ -88,12 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%{_bindir}/libintl-8.dll
-%{_libdir}/libintl.dll.a
+#%{_bindir}/libintl-8.dll
+#%{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
-%if %{with asprintf}
 %{_bindir}/libasprintf-0.dll
 %{_libdir}/libasprintf.dll.a
 %{_libdir}/libasprintf.la
-%endif
 %{_includedir}/*.h
