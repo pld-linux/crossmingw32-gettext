@@ -51,8 +51,6 @@ Biblioteki gettext - wersja skrośna dla mingw32.
 
 %build
 export PKG_CONFIG_PATH=%{_prefix}/lib/pkgconfig
-export AR="%{target}-ar"
-export RANLIB="%{target}-ranlib"
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -68,6 +66,8 @@ cd ../gettext-runtime
 cd ..
 
 %configure \
+	AR="%{target}-ar" \
+	RANLIB="%{target}-ranlib" \
 	--target=%{target} \
 	--host=%{target_platform} \
 	--disable-csharp \
@@ -90,8 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-#%{_bindir}/libintl-8.dll
-#%{_libdir}/libintl.dll.a
+%{_bindir}/libintl-8.dll
+%{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
 %{_bindir}/libasprintf-0.dll
 %{_libdir}/libasprintf.dll.a
