@@ -12,6 +12,7 @@ Source0:	ftp://ftp.gnu.org/gnu/gettext/%{_realname}-%{version}.tar.gz
 Patch0:		%{_realname}-info.patch
 Patch1:		%{_realname}-killkillkill.patch
 Patch2:		%{name}.patch
+Patch3:		%{_realname}-localename.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
@@ -48,9 +49,9 @@ Biblioteki gettext - wersja skrośna dla mingw32.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
-export PKG_CONFIG_PATH=%{_prefix}/lib/pkgconfig
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
