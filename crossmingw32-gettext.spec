@@ -67,12 +67,11 @@ cd ../gettext-runtime
 cd ..
 
 %configure \
-	AR="%{target}-ar" \
-	RANLIB="%{target}-ranlib" \
 	--target=%{target} \
-	--host=%{target_platform} \
+	--host=%{target} \
 	--disable-csharp \
-	--disable-static
+	--enable-static
+
 %{__make}
 
 %install
@@ -85,16 +84,19 @@ rm -rf $RPM_BUILD_ROOT
 %{target}-strip --strip-unneeded -R.comment -R.note $RPM_BUILD_ROOT%{_bindir}/*.dll
 %{target}-strip -g -R.comment -R.note $RPM_BUILD_ROOT%{_libdir}/*.a
 %endif
-
+#
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%{_bindir}/*.dll
+%{_libdir}/*.la
+%{_libdir}/*.a
+%{_includedir}/*.h
 %{_bindir}/libintl-8.dll
 %{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
 %{_bindir}/libasprintf-0.dll
 %{_libdir}/libasprintf.dll.a
 %{_libdir}/libasprintf.la
-%{_includedir}/*.h
