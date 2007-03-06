@@ -60,6 +60,7 @@ Statyczne biblioteki gettext (wersja skrośna mingw32).
 Summary:	DLL gettext libraries for Windows
 Summary(pl.UTF-8):	Biblioteki DLL gettext dla Windows
 Group:		Applications/Emulators
+Requires:	crossmingw32-libiconv-dll
 Requires:	wine
 
 %description dll
