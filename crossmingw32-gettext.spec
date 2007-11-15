@@ -1,22 +1,22 @@
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla mingw32
-%define		_realname		gettext
-Name:		crossmingw32-%{_realname}
-Version:	0.16.1
+%define		realname		gettext
+Name:		crossmingw32-%{realname}
+Version:	0.17
 Release:	1
-License:	LGPL
+License:	LGPL v2+
 Group:		Development/Libraries
-Source0:	ftp://ftp.gnu.org/gnu/gettext/%{_realname}-%{version}.tar.gz
-# Source0-md5:	3d9ad24301c6d6b17ec30704a13fe127
-Patch0:		%{_realname}-info.patch
-Patch1:		%{_realname}-killkillkill.patch
-Patch2:		%{name}.patch
-Patch3:		%{_realname}-localename.patch
+Source0:	ftp://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
+# Source0-md5:	58a2bc6d39c0ba57823034d55d65d606
+Patch0:		%{realname}-info.patch
+Patch1:		%{realname}-killkillkill.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-gcc-c++
+# just to shorten build (libgettextlib is not packaged anyway)
+BuildRequires:	crossmingw32-glib2 >= 2.0
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool
 BuildRequires:	texinfo
@@ -68,11 +68,9 @@ DLL gettext libraries for Windows.
 Biblioteki DLL gettext dla Windows.
 
 %prep
-%setup -q -n %{_realname}-%{version}
+%setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__libtoolize}
@@ -95,7 +93,8 @@ cd ..
 	--disable-csharp \
 	--enable-static
 
-%{__make}
+%{__make} \
+	SHELL=bash
 
 %install
 rm -rf $RPM_BUILD_ROOT
