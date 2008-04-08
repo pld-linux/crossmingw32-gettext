@@ -6,7 +6,7 @@ Version:	0.17
 Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
-Source0:	ftp://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
+Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
 # Source0-md5:	58a2bc6d39c0ba57823034d55d65d606
 Patch0:		%{realname}-info.patch
 Patch1:		%{realname}-killkillkill.patch
