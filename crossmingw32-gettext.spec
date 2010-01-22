@@ -1,3 +1,6 @@
+#
+%bcond_with     bootstrap       # use system GLib
+#
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla mingw32
 %define		realname		gettext
@@ -9,14 +12,16 @@ Group:		Development/Libraries
 Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
 # Source0-md5:	58a2bc6d39c0ba57823034d55d65d606
 Patch0:		%{realname}-info.patch
-Patch1:		%{realname}-killkillkill.patch
+Patch1:		%{realname}-libintl_by_gcj.patch
+Patch2:		%{realname}-removed_macros.patch
+Patch3:		%{name}-kill_tools.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.10
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-gcc-c++
 # just to shorten build (libgettextlib is not packaged anyway)
-BuildRequires:	crossmingw32-glib2 >= 2.0
+%{!?with_bootstrap:BuildRequires:	crossmingw32-glib2 >= 2.0}
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool
 BuildRequires:	texinfo
@@ -71,21 +76,30 @@ Biblioteki DLL gettext dla Windows.
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__automake}
 cd autoconf-lib-link
 %{__aclocal} -I m4 -I ../m4
 %{__autoconf}
 %{__automake}
 cd ../gettext-runtime
+%{__libtoolize}
 %{__aclocal} -I m4 -I gnulib-m4 -I ../autoconf-lib-link/m4 -I ../m4
 %{__autoconf}
+%{__autoheader}
 %{__automake}
-cd ..
+cd libasprintf
+%{__aclocal} -I ../m4 -I ../../m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ../..
+%{__aclocal}
+%{__autoconf}
+%{__automake}
 
 %configure \
 	--target=%{target} \
