@@ -1,22 +1,22 @@
---- gettext-0.17/configure.ac.org	2010-01-22 01:41:49.350588481 +0100
-+++ gettext-0.17/configure.ac	2010-01-22 01:41:55.122718436 +0100
-@@ -36,7 +36,7 @@
+--- gettext-0.18.1.1/configure.ac.orig	2010-06-06 14:49:57.000000000 +0200
++++ gettext-0.18.1.1/configure.ac	2010-06-20 00:03:32.991443936 +0200
+@@ -37,7 +37,7 @@
  
  dnl Checks for library functions.
  
--AC_CONFIG_SUBDIRS(autoconf-lib-link gettext-runtime gettext-tools)
-+AC_CONFIG_SUBDIRS(autoconf-lib-link gettext-runtime)
+-AC_CONFIG_SUBDIRS([gettext-runtime gettext-tools])
++AC_CONFIG_SUBDIRS([gettext-runtime])
  
  dnl Ensure that "configure --help" lists all the command line options that
  dnl are usable with the subdir configures. Really AC_CONFIG_SUBDIRS should
---- gettext-0.17/Makefile.am.org	2010-01-22 01:44:52.630962481 +0100
-+++ gettext-0.17/Makefile.am	2010-01-22 01:45:14.619713081 +0100
-@@ -19,7 +19,7 @@
- AUTOMAKE_OPTIONS = 1.5 gnu no-dependencies
+--- gettext-0.18.1.1/Makefile.am.orig	2010-06-06 14:49:57.000000000 +0200
++++ gettext-0.18.1.1/Makefile.am	2010-06-20 00:03:49.599439746 +0200
+@@ -20,7 +20,7 @@
  ACLOCAL = build-aux/fixaclocal @ACLOCAL@
+ ACLOCAL_AMFLAGS = -I m4
  
--SUBDIRS = gnulib-local gettext-runtime gettext-tools autoconf-lib-link
-+SUBDIRS = gnulib-local gettext-runtime autoconf-lib-link
+-SUBDIRS = gnulib-local gettext-runtime gettext-tools
++SUBDIRS = gnulib-local gettext-runtime
  
  EXTRA_DIST = \
    version.sh DEPENDENCIES PACKAGING HACKING ChangeLog.0 autogen.sh \

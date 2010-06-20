@@ -1,27 +1,20 @@
-#
-%bcond_with     bootstrap       # use system GLib
-#
 Summary:	gettext libraries - cross mingw32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla mingw32
 %define		realname		gettext
 Name:		crossmingw32-%{realname}
-Version:	0.17
+Version:	0.18.1.1
 Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
 Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	58a2bc6d39c0ba57823034d55d65d606
-Patch0:		%{realname}-info.patch
-Patch1:		%{realname}-libintl_by_gcj.patch
-Patch2:		%{realname}-removed_macros.patch
-Patch3:		%{name}-kill_tools.patch
+# Source0-md5:	3dd55b952826d2b32f51308f2f91aa89
+Patch0:		%{realname}-libintl_by_gcj.patch
+Patch1:		%{name}-kill_tools.patch
 URL:		http://www.gnu.org/software/gettext/
-BuildRequires:	autoconf >= 2.60
-BuildRequires:	automake >= 1:1.10
+BuildRequires:	autoconf >= 2.62
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-gcc-c++
-# just to shorten build (libgettextlib is not packaged anyway)
-%{!?with_bootstrap:BuildRequires:	crossmingw32-glib2 >= 2.0}
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool
 BuildRequires:	texinfo
@@ -40,6 +33,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_dlldir			/usr/share/wine/windows/system
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
+
+%ifnarch %{ix86}
+# arch-specific flags (like alpha's -mieee) are not valid for i386 gcc
+%define		optflags	-O2
+%endif
+# -z options are invalid for mingw linker
+%define		filterout_ld	-Wl,-z,.*
 
 %description
 gettext libraries - cross mingw32 version.
@@ -76,39 +76,37 @@ Biblioteki DLL gettext dla Windows.
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__libtoolize}
-cd autoconf-lib-link
-%{__aclocal} -I m4 -I ../m4
-%{__autoconf}
-%{__automake}
-cd ../gettext-runtime
+cd gettext-runtime
 %{__libtoolize}
-%{__aclocal} -I m4 -I gnulib-m4 -I ../autoconf-lib-link/m4 -I ../m4
+%{__aclocal} -I m4 -I ../m4 -I gnulib-m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 cd libasprintf
-%{__aclocal} -I ../m4 -I ../../m4
+%{__aclocal} -I ../../m4 -I ../m4 -I gnulib-m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-cd ../..
-%{__aclocal}
+cd ../../gettext-tools
+%{__aclocal} -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ..
+%{__aclocal} -I m4
 %{__autoconf}
 %{__automake}
-
 %configure \
 	--target=%{target} \
 	--host=%{target} \
 	--disable-csharp \
-	--enable-static
+	--enable-static \
+	--without-git
 
-%{__make} \
-	SHELL=bash
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -137,7 +135,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libintl.la
 %{_libdir}/libasprintf.dll.a
 %{_libdir}/libasprintf.la
-%{_includedir}/*.h
+%{_includedir}/autosprintf.h
+%{_includedir}/libintl.h
 
 %files static
 %defattr(644,root,root,755)
