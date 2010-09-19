@@ -1,5 +1,5 @@
-Summary:	gettext libraries - cross mingw32 version
-Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla mingw32
+Summary:	gettext libraries - cross MinGW32 version
+Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 %define		realname		gettext
 Name:		crossmingw32-%{realname}
 Version:	0.18.1.1
@@ -42,22 +42,22 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		filterout_ld	-Wl,-z,.*
 
 %description
-gettext libraries - cross mingw32 version.
+gettext libraries - cross MinGW32 version.
 
 %description -l pl.UTF-8
-Biblioteki gettext - wersja skrośna dla mingw32.
+Biblioteki gettext - wersja skrośna dla MinGW32.
 
 %package static
-Summary:	Static gettext libraries (cross mingw32 version)
-Summary(pl.UTF-8):	Statyczne biblioteki gettext (wersja skrośna mingw32)
+Summary:	Static gettext libraries (cross MinGW32 version)
+Summary(pl.UTF-8):	Statyczne biblioteki gettext (wersja skrośna MinGW32)
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description static
-Static gettext libraries (cross mingw32 version).
+Static gettext libraries (cross MinGW32 version).
 
 %description static -l pl.UTF-8
-Statyczne biblioteki gettext (wersja skrośna mingw32).
+Statyczne biblioteki gettext (wersja skrośna MinGW32).
 
 %package dll
 Summary:	DLL gettext libraries for Windows
