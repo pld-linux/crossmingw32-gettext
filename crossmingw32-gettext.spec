@@ -1,9 +1,16 @@
+# TODO
+# - unpackaged
+#        /usr/i386-mingw32/bin/envsubst.exe
+#        /usr/i386-mingw32/bin/gettext.exe
+#        /usr/i386-mingw32/bin/gettext.sh
+#        /usr/i386-mingw32/bin/ngettext.exe
+
+%define		realname		gettext
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
-%define		realname		gettext
 Name:		crossmingw32-%{realname}
 Version:	0.18.2.1
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Development/Libraries
 Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
@@ -33,6 +40,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_dlldir			/usr/share/wine/windows/system
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
+%define		_ssp_cflags		%{nil}
 
 %ifnarch %{ix86}
 # arch-specific flags (like alpha's -mieee) are not valid for i386 gcc
