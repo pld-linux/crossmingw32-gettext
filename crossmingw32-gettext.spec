@@ -9,14 +9,15 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.18.2.1
-Release:	2
+Version:	0.18.3
+Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
 Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	034c8103b14654ebd300fadac44d6f14
+# Source0-md5:	3fa4236c41b7e837355de144210207ec
 Patch0:		%{realname}-libintl_by_gcj.patch
 Patch1:		%{name}-kill_tools.patch
+Patch2:		%{realname}-ac.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.11
@@ -84,6 +85,7 @@ Biblioteki DLL gettext dla Windows.
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -132,9 +134,9 @@ mv -f $RPM_BUILD_ROOT%{_prefix}/bin/*.dll $RPM_BUILD_ROOT%{_dlldir}
 %{target}-strip -g -R.comment -R.note $RPM_BUILD_ROOT%{_libdir}/*.a
 %endif
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/charset.alias
-rm -rf $RPM_BUILD_ROOT%{_datadir}/{aclocal,doc,gettext,locale,man}
-rm -rf $RPM_BUILD_ROOT%{_infodir}
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{{envsubst,gettext,ngettext}.exe,gettext.sh}
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/{doc,gettext,locale,man}
+%{__rm} -r $RPM_BUILD_ROOT%{_infodir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
