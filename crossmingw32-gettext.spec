@@ -1,23 +1,15 @@
-# TODO
-# - unpackaged
-#        /usr/i386-mingw32/bin/envsubst.exe
-#        /usr/i386-mingw32/bin/gettext.exe
-#        /usr/i386-mingw32/bin/gettext.sh
-#        /usr/i386-mingw32/bin/ngettext.exe
-
 %define		realname		gettext
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.18.3
+Version:	0.18.3.1
 Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
 Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	3fa4236c41b7e837355de144210207ec
+# Source0-md5:	3fc808f7d25487fc72b5759df7419e02
 Patch0:		%{realname}-libintl_by_gcj.patch
 Patch1:		%{name}-kill_tools.patch
-Patch2:		%{realname}-ac.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.62
 BuildRequires:	automake >= 1:1.11
@@ -85,7 +77,6 @@ Biblioteki DLL gettext dla Windows.
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}
