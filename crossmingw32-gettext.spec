@@ -2,21 +2,22 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.18.3.2
+Version:	0.19
 Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
 Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.gz
-# Source0-md5:	241aba309d07aa428252c74b40a818ef
+# Source0-md5:	eae24a623e02b33e3e1024adff9a5a08
 Patch0:		%{realname}-libintl_by_gcj.patch
 Patch1:		%{name}-kill_tools.patch
 URL:		http://www.gnu.org/software/gettext/
 BuildRequires:	autoconf >= 2.62
-BuildRequires:	automake >= 1:1.11
+BuildRequires:	automake >= 1:1.13
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-gcc-c++
 BuildRequires:	crossmingw32-libiconv
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
+BuildRequires:	sed >= 4.0
 BuildRequires:	texinfo
 Requires:	crossmingw32-libiconv
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -77,6 +78,14 @@ Biblioteki DLL gettext dla Windows.
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
+
+%{__sed} -i \
+	-e 's@m4_esyscmd(\[build-aux/git-version-gen \.tarball-version\])@[%{version}]@' \
+	configure.ac
+%{__sed} -i \
+	-e 's@m4_esyscmd(\[\.\./build-aux/git-version-gen \.\./\.tarball-version\])@[%{version}]@' \
+	gettext-runtime/configure.ac \
+	gettext-tools/configure.ac
 
 %build
 %{__libtoolize}
