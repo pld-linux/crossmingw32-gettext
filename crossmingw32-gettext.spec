@@ -2,12 +2,12 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.19.5.1
+Version:	0.19.6
 Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
-Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.xz
-# Source0-md5:	9b7c37e410df4bd1bf854e8c897cf937
+Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.lz
+# Source0-md5:	45b2a123cdc7cef54df98152a0da3fcc
 Patch0:		%{realname}-libintl_by_gcj.patch
 Patch1:		%{name}-kill_tools.patch
 URL:		http://www.gnu.org/software/gettext/
@@ -17,10 +17,10 @@ BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-gcc-c++
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool >= 2:2
+BuildRequires:	lzip
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	texinfo
-BuildRequires:	xz
 Requires:	crossmingw32-libiconv
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
