@@ -1,0 +1,10 @@
+--- gettext-0.19.8.1/gettext-runtime/gnulib-lib/strerror-override.c.orig	2016-06-11 14:59:31.000000000 +0200
++++ gettext-0.19.8.1/gettext-runtime/gnulib-lib/strerror-override.c	2018-10-01 19:19:40.808530467 +0200
+@@ -24,6 +24,7 @@
+ #include <errno.h>
+ 
+ #if GNULIB_defined_EWINSOCK /* native Windows platforms */
++# include <winerror.h>
+ # if HAVE_WINSOCK2_H
+ #  include <winsock2.h>
+ # endif
