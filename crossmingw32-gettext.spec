@@ -2,26 +2,25 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.19.8.1
-Release:	5
+Version:	0.20.1
+Release:	1
 License:	LGPL v2+
 Group:		Development/Libraries
-Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.lz
-# Source0-md5:	d838d2c4144261d0c5fbab4a0aceb5c1
-Patch0:		%{realname}-libintl_by_gcj.patch
-Patch1:		%{name}-kill_tools.patch
-Patch2:		%{realname}-mingw32.patch
+Source0:	http://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.xz
+# Source0-md5:	9ed9e26ab613b668e0026222a9c23639
+Patch0:		%{name}-kill_tools.patch
+Patch1:		%{realname}-mingw32.patch
 URL:		http://www.gnu.org/software/gettext/
-BuildRequires:	autoconf >= 2.62
+BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.13
 BuildRequires:	crossmingw32-gcc
 BuildRequires:	crossmingw32-gcc-c++
 BuildRequires:	crossmingw32-libiconv
 BuildRequires:	libtool >= 2:2
-BuildRequires:	lzip
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	texinfo
+BuildRequires:	xz
 Requires:	crossmingw32-libiconv
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -81,7 +80,6 @@ Biblioteki DLL gettext dla Windows.
 %setup -q -n %{realname}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %{__sed} -i \
 	-e 's@m4_esyscmd(\[build-aux/git-version-gen \.tarball-version\])@[%{version}]@' \
@@ -92,7 +90,6 @@ Biblioteki DLL gettext dla Windows.
 	gettext-tools/configure.ac
 
 %build
-%{__libtoolize}
 cd gettext-runtime
 %{__libtoolize}
 %{__aclocal} -I m4 -I ../m4 -I gnulib-m4
@@ -104,12 +101,22 @@ cd libasprintf
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-cd ../../gettext-tools
+cd ../../libtextstyle
+%{__libtoolize}
+%{__aclocal} -I m4 -I gnulib-m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ../gettext-tools
 %{__aclocal} -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-cd ..
+cd examples
+%{__aclocal} -I ../../gettext-runtime/m4 -I ../../m4
+%{__autoconf}
+%{__automake}
+cd ../..
 %{__aclocal} -I m4
 %{__autoconf}
 %{__automake}
