@@ -2,12 +2,12 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.21.1
-Release:	2
-License:	LGPL v2+
+Version:	0.22
+Release:	1
+License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	https://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.xz
-# Source0-md5:	27fcc8a42dbc8f334f23a08f1f2fe00a
+# Source0-md5:	db2f3daf34fd5b85ab1a56f9033e42d1
 Patch0:		%{name}-kill_tools.patch
 Patch1:		%{realname}-mingw32.patch
 URL:		http://www.gnu.org/software/gettext/
@@ -157,7 +157,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %{_libdir}/libintl.dll.a
-%{_libdir}/libintl.la
 %{_libdir}/libasprintf.dll.a
 %{_libdir}/libasprintf.la
 %{_includedir}/autosprintf.h
