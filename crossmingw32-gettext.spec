@@ -2,12 +2,12 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.22.5
+Version:	0.23.1
 Release:	1
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	https://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.lz
-# Source0-md5:	d82550b0c72b2bf175b682d27c7565fc
+# Source0-md5:	99317e9e1a95d6d8e06bbf287caa423a
 Patch0:		%{name}-kill_tools.patch
 Patch1:		%{realname}-mingw32.patch
 URL:		http://www.gnu.org/software/gettext/
@@ -79,8 +79,8 @@ Biblioteki DLL gettext dla Windows.
 
 %prep
 %setup -q -n %{realname}-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %{__sed} -i \
 	-e 's@m4_esyscmd(\[build-aux/git-version-gen \.tarball-version\])@[%{version}]@' \
@@ -97,7 +97,13 @@ cd gettext-runtime
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-cd libasprintf
+cd intl
+%{__libtoolize}
+%{__aclocal} -I ../../m4 -I ../m4 -I gnulib-m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ../libasprintf
 %{__aclocal} -I ../../m4 -I ../m4 -I gnulib-m4
 %{__autoconf}
 %{__autoheader}
@@ -109,7 +115,7 @@ cd ../../libtextstyle
 %{__autoheader}
 %{__automake}
 cd ../gettext-tools
-%{__aclocal} -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4
+%{__aclocal} -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4 -I tests/gnulib-m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
@@ -157,6 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %{_libdir}/libintl.dll.a
+%{_libdir}/libintl.la
 %{_libdir}/libasprintf.dll.a
 %{_libdir}/libasprintf.la
 %{_includedir}/autosprintf.h

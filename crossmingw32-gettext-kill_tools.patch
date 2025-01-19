@@ -9,10 +9,10 @@
  
  AM_EXTRA_RECURSIVE_TARGETS([maintainer-update-po])
  
---- gettext-0.20.1/Makefile.am.orig	2019-06-27 21:32:43.615644574 +0200
-+++ gettext-0.20.1/Makefile.am	2019-06-27 21:35:23.144780330 +0200
+--- gettext-0.23.1/Makefile.am.orig	2025-01-19 11:56:57.750452168 +0100
++++ gettext-0.23.1/Makefile.am	2025-01-19 11:57:49.220173333 +0100
 @@ -19,7 +19,7 @@
- AUTOMAKE_OPTIONS = 1.5 gnu no-dependencies
+ AUTOMAKE_OPTIONS = 1.5 gnu
  ACLOCAL_AMFLAGS = -I m4
  
 -SUBDIRS = gnulib-local gettext-runtime libtextstyle gettext-tools
