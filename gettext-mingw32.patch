@@ -8,3 +8,191 @@
  # if HAVE_WINSOCK2_H
  #  include <winsock2.h>
  # endif
+--- gettext-0.24/gettext-runtime/gnulib-m4/locale_h.m4.orig	2025-02-24 13:35:11.000000000 +0100
++++ gettext-0.24/gettext-runtime/gnulib-m4/locale_h.m4	2025-04-01 19:27:27.700640534 +0200
+@@ -26,7 +26,8 @@ AC_DEFUN_ONCE([gl_LOCALE_H],
+     [gl_cv_header_locale_has_windows_locale_t],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+-          [[#include <locale.h>
++          [[#include <_mingw.h>
++	    #include <locale.h>
+             _locale_t x;]],
+           [[]])],
+        [gl_cv_header_locale_has_windows_locale_t=yes],
+@@ -124,7 +125,8 @@ AC_DEFUN([gl_LOCALE_T],
+     [gl_cv_header_locale_has_locale_t],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+-          [[#include <locale.h>
++          [[#include <_mingw.h>
++	    #include <locale.h>
+             locale_t x;]],
+           [[]])],
+        [gl_cv_header_locale_has_locale_t=yes],
+--- gettext-0.24/gettext-runtime/intl/gnulib-m4/locale_h.m4.orig	2025-02-24 13:35:11.000000000 +0100
++++ gettext-0.24/gettext-runtime/intl/gnulib-m4/locale_h.m4	2025-04-01 19:27:27.700640534 +0200
+@@ -26,7 +26,8 @@ AC_DEFUN_ONCE([gl_LOCALE_H],
+     [gl_cv_header_locale_has_windows_locale_t],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+-          [[#include <locale.h>
++          [[#include <_mingw.h>
++	    #include <locale.h>
+             _locale_t x;]],
+           [[]])],
+        [gl_cv_header_locale_has_windows_locale_t=yes],
+@@ -124,7 +125,8 @@ AC_DEFUN([gl_LOCALE_T],
+     [gl_cv_header_locale_has_locale_t],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+-          [[#include <locale.h>
++          [[#include <_mingw.h>
++	    #include <locale.h>
+             locale_t x;]],
+           [[]])],
+        [gl_cv_header_locale_has_locale_t=yes],
+--- gettext-0.24/gettext-runtime/intl/gnulib-lib/vasnprintf.c.orig	2025-02-04 11:00:19.000000000 +0100
++++ gettext-0.24/gettext-runtime/intl/gnulib-lib/vasnprintf.c	2025-04-01 19:47:14.764209659 +0200
+@@ -7267,7 +7267,11 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *
+     return result;
+ 
+   overflow:
++#ifdef EOVERFLOW
+     errno = EOVERFLOW;
++#else
++    errno = ERANGE;
++#endif
+     goto fail_with_errno;
+ 
+   out_of_memory:
+--- gettext-0.24/gettext-runtime/gnulib-lib/canonicalize-lgpl.c.orig	2025-01-02 01:27:37.000000000 +0100
++++ gettext-0.24/gettext-runtime/gnulib-lib/canonicalize-lgpl.c	2025-04-01 19:58:18.747279220 +0200
+@@ -104,7 +104,11 @@ file_accessible (char const *file)
+   return __faccessat (AT_FDCWD, file, F_OK, AT_EACCESS) == 0;
+ # else
+   struct stat st;
++#   ifdef EOVERFLOW
+   return stat (file, &st) == 0 || errno == EOVERFLOW;
++#   else
++  return stat (file, &st) == 0 || errno == ERANGE;
++#   endif
+ # endif
+ }
+ 
+@@ -316,7 +320,11 @@ realpath_stk (const char *name, char *re
+             {
+               if (++num_links > __eloop_threshold ())
+                 {
++#ifdef ELOOP
+                   __set_errno (ELOOP);
++#else
++                  __set_errno (ERANGE);
++#endif
+                   goto error;
+                 }
+ 
+--- gettext-0.24/gettext-runtime/gnulib-lib/stat.c.orig	2025-01-02 01:27:35.000000000 +0100
++++ gettext-0.24/gettext-runtime/gnulib-lib/stat.c	2025-04-02 06:21:48.944610784 +0200
+@@ -259,7 +259,11 @@ rpl_stat (char const *name, struct stat
+           FindClose (h);
+           if (malloca_rname != NULL)
+             freea (malloca_rname);
++#ifdef EOVERFLOW
+           errno = EOVERFLOW;
++#else
++          errno = ERANGE;
++#endif
+           return -1;
+         }
+ 
+--- gettext-0.24/gettext-runtime/gnulib-lib/stat-w32.c.orig	2025-01-02 01:27:35.000000000 +0100
++++ gettext-0.24/gettext-runtime/gnulib-lib/stat-w32.c	2025-04-02 06:24:18.913798331 +0200
+@@ -190,7 +190,11 @@ _gl_fstat_by_handle (HANDLE h, const cha
+       /* Test for error conditions before starting to fill *buf.  */
+       if (sizeof (buf->st_size) <= 4 && info.nFileSizeHigh > 0)
+         {
++#ifdef EOVERFLOW
+           errno = EOVERFLOW;
++#else
++          errno = ERANGE;
++#endif
+           return -1;
+         }
+ 
+--- gettext-0.24/gettext-runtime/gnulib-lib/vasnprintf.c.orig	2025-02-04 11:00:19.000000000 +0100
++++ gettext-0.24/gettext-runtime/gnulib-lib/vasnprintf.c	2025-04-01 19:47:14.764209659 +0200
+@@ -7267,7 +7267,11 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *
+     return result;
+ 
+   overflow:
++#ifdef EOVERFLOW
+     errno = EOVERFLOW;
++#else
++    errno = ERANGE;
++#endif
+     goto fail_with_errno;
+ 
+   out_of_memory:
+--- gettext-0.24/gettext-runtime/libasprintf/gnulib-lib/vasnprintf.c.orig	2025-02-04 11:00:19.000000000 +0100
++++ gettext-0.24/gettext-runtime/libasprintf/gnulib-lib/vasnprintf.c	2025-04-01 19:47:14.764209659 +0200
+@@ -7267,7 +7267,11 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *
+     return result;
+ 
+   overflow:
++#ifdef EOVERFLOW
+     errno = EOVERFLOW;
++#else
++    errno = ERANGE;
++#endif
+     goto fail_with_errno;
+ 
+   out_of_memory:
+--- gettext-0.24/gettext-tools/gnulib-m4/locale_h.m4.orig	2025-02-24 13:35:11.000000000 +0100
++++ gettext-0.24/gettext-tools/gnulib-m4/locale_h.m4	2025-04-01 19:27:27.700640534 +0200
+@@ -26,7 +26,8 @@ AC_DEFUN_ONCE([gl_LOCALE_H],
+     [gl_cv_header_locale_has_windows_locale_t],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+-          [[#include <locale.h>
++          [[#include <_mingw.h>
++	    #include <locale.h>
+             _locale_t x;]],
+           [[]])],
+        [gl_cv_header_locale_has_windows_locale_t=yes],
+@@ -124,7 +125,8 @@ AC_DEFUN([gl_LOCALE_T],
+     [gl_cv_header_locale_has_locale_t],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+-          [[#include <locale.h>
++          [[#include <_mingw.h>
++	    #include <locale.h>
+             locale_t x;]],
+           [[]])],
+        [gl_cv_header_locale_has_locale_t=yes],
+--- gettext-0.24/gettext-tools/gnulib-lib/canonicalize-lgpl.c.orig	2025-01-02 01:27:37.000000000 +0100
++++ gettext-0.24/gettext-tools/gnulib-lib/canonicalize-lgpl.c	2025-04-01 19:58:18.747279220 +0200
+@@ -104,7 +104,11 @@ file_accessible (char const *file)
+   return __faccessat (AT_FDCWD, file, F_OK, AT_EACCESS) == 0;
+ # else
+   struct stat st;
++#   ifdef EOVERFLOW
+   return stat (file, &st) == 0 || errno == EOVERFLOW;
++#   else
++  return stat (file, &st) == 0 || errno == ERANGE;
++#   endif
+ # endif
+ }
+ 
+@@ -316,7 +320,11 @@ realpath_stk (const char *name, char *re
+             {
+               if (++num_links > __eloop_threshold ())
+                 {
++#ifdef ELOOP
+                   __set_errno (ELOOP);
++#else
++                  __set_errno (ERANGE);
++#endif
+                   goto error;
+                 }
+ 

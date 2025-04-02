@@ -2,12 +2,12 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.23.1
+Version:	0.24
 Release:	1
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	https://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.lz
-# Source0-md5:	99317e9e1a95d6d8e06bbf287caa423a
+# Source0-md5:	7926c9b9a3bc5aa5d5cf4d4d801e1253
 Patch0:		%{name}-kill_tools.patch
 Patch1:		%{realname}-mingw32.patch
 URL:		http://www.gnu.org/software/gettext/
@@ -91,6 +91,8 @@ Biblioteki DLL gettext dla Windows.
 	gettext-tools/configure.ac
 
 %build
+# we can assume Vista to build with system locale_t support, but then build fails on missing LC_GLOBAL_LOCALE
+#CPPFLAGS="%{rpmcppflags} -DWINVER=0x0600"
 cd gettext-runtime
 %{__libtoolize}
 %{__aclocal} -I m4 -I ../m4 -I gnulib-m4
