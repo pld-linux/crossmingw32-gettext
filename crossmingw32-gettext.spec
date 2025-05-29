@@ -134,6 +134,7 @@ cd ../..
 	--host=%{target} \
 	--disable-csharp \
 	--disable-d \
+	--disable-modula2 \
 	--enable-static \
 	--enable-threads=windows \
 	--without-bzip2 \
