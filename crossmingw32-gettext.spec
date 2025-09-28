@@ -2,12 +2,12 @@
 Summary:	gettext libraries - cross MinGW32 version
 Summary(pl.UTF-8):	Biblioteki gettext - wersja skrośna dla MinGW32
 Name:		crossmingw32-%{realname}
-Version:	0.25.1
+Version:	0.26
 Release:	1
 License:	LGPL v2.1+
 Group:		Development/Libraries
 Source0:	https://ftp.gnu.org/gnu/gettext/%{realname}-%{version}.tar.lz
-# Source0-md5:	f6cf89b61cc29a1f097d4766f2342f56
+# Source0-md5:	22954d4bb74a5246de89a35fdfc5d174
 Patch0:		%{name}-kill_tools.patch
 Patch1:		%{realname}-mingw32.patch
 URL:		http://www.gnu.org/software/gettext/
@@ -34,6 +34,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_prefix			%{_sysprefix}/%{target}
 %define		_libdir			%{_prefix}/lib
 %define		_pkgconfigdir		%{_prefix}/lib/pkgconfig
+%define		_docdir			%{_sysprefix}/share/doc
 %define		_dlldir			/usr/share/wine/windows/system
 %define		__cc			%{target}-gcc
 %define		__cxx			%{target}-g++
@@ -157,7 +158,8 @@ install -d $RPM_BUILD_ROOT%{_dlldir}
 %{target}-strip -g -R.comment -R.note $RPM_BUILD_ROOT%{_libdir}/*.a
 %endif
 
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/{{envsubst,gettext,ngettext}.exe,gettext.sh}
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{envsubst,gettext,ngettext,printf_gettext,printf_ngettext}.exe
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/gettext.sh
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/{doc,gettext,locale,man}
 %{__rm} -r $RPM_BUILD_ROOT%{_infodir}
 
@@ -166,6 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc AUTHORS ChangeLog NEWS README THANKS
 %{_libdir}/libintl.dll.a
 %{_libdir}/libintl.la
 %{_libdir}/libasprintf.dll.a
